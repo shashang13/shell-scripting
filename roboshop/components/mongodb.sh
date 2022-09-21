@@ -18,20 +18,21 @@ logFile=/tmp/mongodb.log
 rm -f $logFile
 
 descriptionPrint 'Setup MongoDB repos'
-curl -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo
+curl -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo &>> $logFile
 statusCheck $?
 
 
 descriptionPrint 'Install MongoDB'
-yum install -y mongodb-org >> $logFile
-
-descriptionPrint 'Starting Service'
-systemctl enable mongod && systemctl start mongod
-statusCheck $?
+yum install -y mongodb-org &>> $logFile
 
 descriptionPrint 'Update Mongodb config file'
-sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> $logFile
 statusCheck $?
+
+descriptionPrint 'Starting Service'
+systemctl enable mongod &>> $logFile && systemctl start mongod &>> $logFile
+statusCheck $?
+
 
 #
 ##restart the service

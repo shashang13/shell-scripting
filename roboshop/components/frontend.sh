@@ -1,29 +1,5 @@
 #!/bin/bash
 
-statusCheck (){
-  if [ "$1" -eq 0 ]; then
-    echo -e "\e[32m $1 is a SUCCESS\e[0m"
-  else
-    echo -e "\e[31m $1 is FAILURE\e[0m"
-    exit "$1"
-  fi
-}
-
-descriptionPrint () {
-  echo -e "\n--------------------\e[36m${1}\e[0m----------------------"
-}
-
-
-################# Main Program ################
-USER_ID=$(id -u)
-if [ ${USER_ID} -ne 0 ]; then
-  echo You need to be root user to execute this program
-  exit 1
-fi
-
-logFile=/tmp/roboshop.log
-rm -f $logFile
-
 descriptionPrint 'Installing NGINX'
 yum install nginx -y  >> $logFile
 statusCheck $?
