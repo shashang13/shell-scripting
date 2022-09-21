@@ -1,11 +1,5 @@
 #!/bin/bash
 
-USER_ID=$(id -u)
-if [ ${USER_ID} -ne 0 ]; then
-  echo You need to be root user to execute this program
-  exit 1
-fi
-
 statusCheck (){
   if [ "$1" -eq 0 ]; then
     echo -e "\e[32mSUCCESS\e[0m"
@@ -19,6 +13,17 @@ descriptionPrint () {
   echo -e "\n--------------------\e[36m${1}\e[0m----------------------"
 }
 
+
+################# Main Program ################
+USER_ID=$(id -u)
+if [ ${USER_ID} -ne 0 ]; then
+  echo You need to be root user to execute this program
+  exit 1
+fi
+
+logFile=/tmp/roboshop.log
+rm -f $logFile
+
 descriptionPrint 'Installing NGINX'
 yum install nginx -y
 statusCheck $?
@@ -27,20 +32,18 @@ descriptionPrint 'Downloading Frontend Software'
 curl -f -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/frontend/archive/main.zip"
 statusCheck $?
 
-cd /usr/share/nginx/html/
-
 descriptionPrint 'Cleanup Old Nginx Content'
-rm -rf /usr/share/nginx/html/*
+cd /usr/share/nginx/html/ && rm -rf /usr/share/nginx/html/*
 statusCheck $?
 
-
 descriptionPrint 'Extracting Archive'
-unzip -o /tmp/frontend.zip
-mv frontend-main/static/* .
+unzip -o /tmp/frontend.zip && mv frontend-main/static/* .
+statusCheck $?
+
+descriptionPrint 'Update Roboshop Configuration'
 mv frontend-main/localhost.conf /etc/nginx/default.d/roboshop.conf
 statusCheck $?
 
 descriptionPrint "Starting Nginx"
-systemctl enable nginx
-systemctl start nginx
+systemctl enable nginx && systemctl start nginx
 statusCheck $?
