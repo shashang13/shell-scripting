@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source common.sh
+
 descriptionPrint 'Installing NGINX'
 yum install nginx -y  >> $logFile
 statusCheck $?
