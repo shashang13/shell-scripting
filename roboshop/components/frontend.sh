@@ -7,7 +7,7 @@ if [ ${USER_ID} -ne 0 ]; then
 fi
 
 statusCheck (){
-  if [ $1 -eq 0 ]; then
+  if [ "$1" -eq 0 ]; then
     echo -e "\e[32mSUCCESS\e[0m"
   else
     echo -e "\e[31mFAILURE\e[0m"
@@ -27,9 +27,12 @@ descriptionPrint 'Downloading Frontend Software'
 curl -f -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/frontend/archive/main.zip"
 statusCheck $?
 
+cd /usr/share/nginx/html/
+
 descriptionPrint 'Cleanup Old Nginx Content'
 rm -rf /usr/share/nginx/html/*
 statusCheck $?
+
 
 descriptionPrint 'Extracting Archive'
 unzip -o /tmp/frontend.zip
