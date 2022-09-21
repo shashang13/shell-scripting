@@ -21,24 +21,24 @@ descriptionPrint () {
 
 descriptionPrint 'Installing NGINX'
 yum install nginx -y
-STATUS_CHECK
+statusCheck
 
 descriptionPrint 'Downloading Frontend Software'
 curl -f -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/frontend/archive/main.zip"
-STATUS_CHECK
+statusCheck
 
 descriptionPrint 'Cleanup Old Nginx Content'
 cd /usr/share/nginx/html
 rm -rf *
-STATUS_CHECK
+statusCheck
 
 descriptionPrint 'Extracting Archive'
 unzip /tmp/frontend.zip
 mv frontend-main/static/* .
 mv frontend-main/localhost.conf /etc/nginx/default.d/roboshop.conf
-STATUS_CHECK
+statusCheck
 
 descriptionPrint "Starting Nginx"
 systemctl enable nginx
 systemctl start nginx
-STATUS_CHECK
+statusCheck
