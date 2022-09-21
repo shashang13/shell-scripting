@@ -11,7 +11,7 @@ statusCheck (){
     echo -e "\e[32mSUCCESS\e[0m"
   else
     echo -e "\e[31mFAILURE\e[0m"
-    exit $1
+    exit "$1"
   fi
 }
 
@@ -32,9 +32,9 @@ rm -rf /usr/share/nginx/html/*
 statusCheck $?
 
 descriptionPrint 'Extracting Archive'
-unzip /tmp/frontend.zip
+unzip -o /tmp/frontend.zip
 mv frontend-main/static/* .
-m frontend-main/localhost.conf /etc/nginx/default.d/roboshop.conf
+mv frontend-main/localhost.conf /etc/nginx/default.d/roboshop.conf
 statusCheck $?
 
 descriptionPrint "Starting Nginx"
