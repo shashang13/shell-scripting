@@ -1,5 +1,5 @@
 #!/bin/bash
-source common.sh
+source components/common.sh
 
 descriptionPrint 'Setup MongoDB repos'
 curl -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo &>> $logFile
