@@ -29,9 +29,7 @@ descriptionPrint 'Starting Service'
 systemctl enable mongod && systemctl start mongod
 statusCheck $?
 
-
-## Update Listen IP address from 127.0.0.1 to 0.0.0.0 in config file
-##Config file: `/etc/mongod.conf`
+descriptionPrint 'Update Mongodb config file'
 sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
 statusCheck $?
 
