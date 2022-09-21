@@ -14,7 +14,7 @@ sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> $logFile
 statusCheck $?
 
 descriptionPrint 'Starting Service'
-systemctl enable mongod &>> $logFile && systemctl start mongod &>> $logFile
+systemctl enable mongod &>> $logFile && systemctl restart mongod &>>$logFile
 statusCheck $?
 
 
