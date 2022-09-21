@@ -33,7 +33,7 @@ curl -f -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/f
 statusCheck $?
 
 descriptionPrint 'Cleanup Old Nginx Content'
-cd /usr/share/nginx/html/ && rm -rf /usr/share/nginx/html/*
+cd /usr/share/nginx/htm/ && rm -rf /usr/share/nginx/html/*
 statusCheck $?
 
 descriptionPrint 'Extracting Archive'
