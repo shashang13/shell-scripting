@@ -16,7 +16,7 @@ statusCheck (){
 }
 
 descriptionPrint () {
-  echo -e "--------------------\e[36m${1}\e[0m----------------------"
+  echo -e "\n--------------------\e[36m${1}\e[0m----------------------"
 }
 
 descriptionPrint 'Installing NGINX'
