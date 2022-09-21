@@ -6,7 +6,7 @@ if [ ${USER_ID} -ne 0 ]; then
   exit 1
 fi
 
-STATUS_CHECK (){
+statusCheck (){
   if [ $? -eq 0 ]; then
     echo -e "\e[32mSUCCESS\e[0m"
   else
@@ -15,7 +15,11 @@ STATUS_CHECK (){
   fi
 }
 
-echo -e "\e[36mInstalling NGINX\e[0m"
+descriptionPrint () {
+  echo -e "--------------------\e[36m${1}\e[0m----------------------"
+}
+
+descriptionPrint 'Installing NGINX'
 yum install nginx -y
 STATUS_CHECK
 
