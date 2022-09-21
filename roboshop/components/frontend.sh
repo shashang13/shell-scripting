@@ -24,12 +24,11 @@ yum install nginx -y
 statusCheck
 
 descriptionPrint 'Downloading Frontend Software'
-curl -f -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/frontend/archive/main.zip"
+curl -f -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/frontend/archive/main"
 statusCheck
 
 descriptionPrint 'Cleanup Old Nginx Content'
-cd /usr/share/nginx/html
-rm -rf *
+rm -rf /usr/share/nginx/html/*
 statusCheck
 
 descriptionPrint 'Extracting Archive'
