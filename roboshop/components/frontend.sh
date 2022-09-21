@@ -41,7 +41,7 @@ unzip -o /tmp/frontend.zip >>$logFile && mv frontend-main/static/* . >>$logFile
 statusCheck $?
 
 descriptionPrint 'Update Roboshop Configuration'
-m frontend-main/localhost.conf /etc/nginx/default.d/roboshop.conf &>>$logFile
+m frontend-main/localhost.conf /etc/nginx/default.d/roboshop.conf &>$logFile
 statusCheck $?
 
 descriptionPrint "Starting Nginx"
