@@ -8,8 +8,9 @@ statusCheck (){
 }
 
 descriptionPrint () {
+  echo ${1}
   echo -e "\n--------------------\e[36m${1}\e[0m----------------------"
-  STAGE=$1
+  STAGE=${1}
 }
 
 
