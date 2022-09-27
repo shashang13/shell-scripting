@@ -1,6 +1,6 @@
 statusCheck (){
   if [ "$1" -eq 0 ]; then
-    echo $STAGE
+    echo ${STAGE}
     echo -e "\e[32m $2 is a SUCCESS\e[0m"
   else
     echo -e "\e[31m $2 is FAILURE\e[0m"
