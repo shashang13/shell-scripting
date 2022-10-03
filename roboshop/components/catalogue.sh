@@ -7,7 +7,7 @@ echo "Download & Install nodejs" &>>${logFile}
 curl -fsL https://rpm.nodesource.com/setup_lts.x | bash - &>>${logFile} && echo "" &>>${logFile} && yum install nodejs -y &>>${logFile}
 statusCheck $? "${STAGE}"
 
-id ${App_User}
+id ${App_User} &>>${logFile}
 if [ $? -ne 0 ]; then
   descriptionPrint "Adding Application User"
   useradd ${App_User} &>>${logFile}
