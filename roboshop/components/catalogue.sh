@@ -23,6 +23,7 @@ statusCheck $? "${STAGE}"
 
 descriptionPrint "Extract and Install Catalogue Application"
 cd /home/roboshop &>>${logFile} && unzip -o /tmp/catalogue.zip &>>${logFile} && mv catalogue-main catalogue &>>${logFile}
+statusCheck $? "${STAGE}"
 
 descriptionPrint "Install Application dependencies"
 cd /home/roboshop/catalogue &>>${logFile} && npm install &>>${logFile}
