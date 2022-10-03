@@ -7,11 +7,12 @@ echo "Download & Install nodejs" &>>${logFile}
 curl -fsL https://rpm.nodesource.com/setup_lts.x | bash - &>>${logFile} && echo "" &>>${logFile} && yum install nodejs -y &>>${logFile}
 statusCheck $? "${STAGE}"
 
-
-descriptionPrint "Create Application User"
-useradd ${App_User} &>>${logFile}
-statusCheck $? "${STAGE}"
-
+id ${App_User}
+if [ $? -ne 0 ]; then
+  descriptionPrint "Adding Application User"
+  useradd ${App_User} &>>${logFile}
+  statusCheck $? "${STAGE}"
+fi
 
 descriptionPrint "Download Catalogue component"
 curl -f -s -L -o /tmp/catalogue.zip "https://github.com/roboshop-devops-project/catalogue/archive/main.zip" &>>${logFile}
