@@ -30,6 +30,11 @@ descriptionPrint "Install Application dependencies"
 cd /home/roboshop/catalogue &>>${logFile} && npm install &>>${logFile}
 statusCheck $? "${STAGE}"
 
+descriptionPrint "Fix App User Permissions"
+chown -R ${App_User}:${App_User} /home/roboshop/
+statusCheck $? "${STAGE}"
+
+
 #descriptionPrint ""
 #Update SystemD file with correct IP addresses
 #
