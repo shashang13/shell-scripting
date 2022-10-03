@@ -28,5 +28,5 @@ cd /tmp &>>logFile && unzip -o mongodb.zip &>>logFile
 statusCheck $? "${STAGE}"
 
 descriptionPrint 'Load Schema'
-cd mongodb-main &>>logFile && mongo < catalogue.js && mongo < users.js
+cd mongodb-main &>>logFile && mongo < catalogue.js >>logFile && mongo < users.js >>logFile
 statusCheck $? "${STAGE}"
