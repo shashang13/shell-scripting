@@ -31,21 +31,13 @@ cd /home/roboshop/catalogue &>>${logFile} && npm install &>>${logFile}
 statusCheck $? "${STAGE}"
 
 descriptionPrint "Fix App User Permissions"
-chown -R ${App_User}:${App_User} /home/roboshop/
+chown -R ${App_User}:${App_User} /home/roboshop/ &>>${logFile}
 statusCheck $? "${STAGE}"
 
+descriptionPrint "Setup SystemD file"
+sed -i -e 's/MONGO_DNSNAME/mongodb.roboshop.internal/' /home/roboshop/catalogue/systemd.service &>>${logFile} && mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service &>>${logFile}
+statusCheck $? "${STAGE}"
 
-#descriptionPrint ""
-#Update SystemD file with correct IP addresses
-#
-#    Update `MONGO_DNSNAME` with MongoDB Server IP
-#
-#2. Now, lets set up the service with systemctl.
-#
-#```bash
-## mv /home/roboshop/catalogue/systemd.service /etc/systemd/system/catalogue.service
-## systemctl daemon-reload
-## systemctl start catalogue
-## systemctl enable catalogue
-#
-#```
+descriptionPrint "Starting Catalogue Service"
+systemctl daemon-reload &>>${logFile} && systemctl restart catalogue &>>${logFile} && systemctl enable catalogue &>>${logFile}
+statusCheck $? "${STAGE}"
