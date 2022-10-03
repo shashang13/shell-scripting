@@ -19,7 +19,7 @@ unzip -o /tmp/frontend.zip &>>${logFile} && mv frontend-main/static/* . &>>${log
 statusCheck $? "${STAGE}"
 
 descriptionPrint 'Configure Frontend'
-mv frontend-main/localhost.conf /etc/nginx/default.d/roboshop.conf &>>${logFile}
+mv frontend-main/localhost.conf /etc/nginx/default.d/roboshop.conf &>>${logFile} &>>${logFile} && sed -i -e '/catalogue/s/localhost/catalogue.roboshop.internal/' /etc/nginx/default.d/roboshop.conf &>>${logFile}
 statusCheck $? "${STAGE}"
 
 descriptionPrint "Start Nginx"
