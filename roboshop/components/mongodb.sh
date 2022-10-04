@@ -26,6 +26,7 @@ descriptionPrint 'Load Schema'
 cd mongodb-main || exit &>>${logFile}
 for schema in catalogue users
 do
+  echo -e "Loading ${schema} Schema"
   mongo < ${schema}.js >>${logFile}
   statusCheck $? "Loading ${schema} schema"
 done
