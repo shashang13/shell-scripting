@@ -23,8 +23,12 @@ cd /tmp &>>${logFile} && unzip -o mongodb.zip &>>${logFile}
 statusCheck $? "${STAGE}"
 
 descriptionPrint 'Load Schema'
-cd mongodb-main &>>${logFile} && mongo < catalogue.js >>${logFile} && mongo < users.js >>${logFile}
-statusCheck $? "${STAGE}"
+cd mongodb-main || exit &>>${logFile}
+for schema in catalogue users
+do
+  mongo < ${schema}.js >>${logFile}
+  statusCheck $? "Loading ${schema} schema"
+done
 
 descriptionPrint 'Starting Service'
 systemctl enable mongod &>>${logFile} && systemctl restart mongod &>>${logFile}
