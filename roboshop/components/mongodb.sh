@@ -2,7 +2,7 @@
 source components/common.sh
 
 descriptionPrint 'Setup MongoDB repos'
-curl -f -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo &>> $logFile
+curl -f -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo &>> ${logFile}
 statusCheck $? "${STAGE}"
 
 
