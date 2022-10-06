@@ -16,14 +16,13 @@ statusCheck $?
 echo 'show databases'|mysql -uroot -p'RoboShop@1' &>>${logFile}
 if [ $? -ne 0 ]; then
   descriptionPrint "Change Default Root Password"
-  rm -f /var/log/mysqld.log &>>${logFile}
   echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('RoboShop@1');" > /tmp/rootpass.sql
   DEFAULT_ROOT_PASSWD=$(grep 'temporary password' /var/log/mysqld.log|awk '{print $NF}')
   mysql --connect-expired-password -uroot -p"${DEFAULT_ROOT_PASSWD}" </tmp/rootpass.sql &>>${logFile}
   statusCheck $?
 fi
 
-echo 'show plugins'|mysql -uroot -p'RoboShop@1' >>${logFile} | grep validate_password ${logFile}
+echo 'show plugins'|mysql -uroot -p'RoboShop@1' 2>>${logFile} | grep validate_password ${logFile}
 if [ $? -eq 0 ]; then
   descriptionPrint "Uninstall Validate plugin"
   echo 'uninstall plugin validate_password;' > /tmp/plugin.sql
