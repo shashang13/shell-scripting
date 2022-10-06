@@ -13,11 +13,11 @@ descriptionPrint "Start MySQL"
 systemctl enable mysqld &>>${logFile} && systemctl start mysqld &>>${logFile}
 statusCheck $?
 
-echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('Roboshop@1');" > /tmp/mysql.sql
+echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('Roboshop@1');" > /tmp/rootpass.sql
 DEFAULT_ROOT_PASSWD=$(grep 'temporary password' /var/log/mysqld.log)
 
 descriptionPrint "Setting Root Password"
-mysql -uroot -p${DEFAULT_ROOT_PASSWD} < /tmp/mysql.sql
+mysql -uroot -p"${DEFAULT_ROOT_PASSWD}" </tmp/rootpass.sql
 statusCheck $?
 ## mysql_secure_installation
 #```
