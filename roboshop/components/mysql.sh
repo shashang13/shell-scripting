@@ -4,14 +4,14 @@ source components/mysql.sh
 descriptionPrint "MySQL Repo Setup"
 curl -f -s -L -o /etc/yum.repos.d/mysql.repo https://raw.githubusercontent.com/roboshop-devops-project/mysql/main/mysql.repo &>>${logFile}
 statusCheck $?
+#
+#descriptionPrint "Installing MySQL"
+#yum install mysql-community-server -y &>>${logFile}
+#statusCheck $?
 
-descriptionPrint "Installing MySQL"
-yum install mysql-community-server -y &>>${logFile}
-statusCheck $?
-
-descriptionPrint "Start MySQL"
-systemctl enable mysqld &>> ${logFile} && systemctl start mysqld &>>${logFile}
-statusCheck $?
+#descriptionPrint "Start MySQL"
+#systemctl enable mysqld &>> ${logFile} && systemctl start mysqld &>>${logFile}
+#statusCheck $?
 
 #1. Now a default root password will be generated and given in the log file.
 #
