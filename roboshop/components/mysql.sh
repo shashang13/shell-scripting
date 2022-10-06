@@ -14,6 +14,7 @@ systemctl enable mysqld &>>${logFile} && systemctl start mysqld &>>${logFile}
 statusCheck $?
 
 echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('RoboShop@1');" > /tmp/rootpass.sql
+
 DEFAULT_ROOT_PASSWD=$(grep 'temporary password' /var/log/mysqld.log|awk '{print $NF}')
 mysql -uroot -p"${DEFAULT_ROOT_PASSWD}" </tmp/rootpass.sql
 #echo 'show databases'|mysql -uroot -p'RoboShop@1' &>>${logFile}
