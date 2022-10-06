@@ -15,7 +15,7 @@ statusCheck $?
 
 echo 'show databases'|mysql -uroot -p'Roboshop@1' &>>${logFile}
 if [ $? -ne 0 ]; then
-  descriptionPrint "Setting Root Password"
+  descriptionPrint "Change Default Root Password"
   echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('Roboshop@1');" > /tmp/rootpass.sql
   DEFAULT_ROOT_PASSWD=$(grep 'temporary password' /var/log/mysqld.log|awk '{print $NF}')
   mysql --connect-expired-password -uroot -p"${DEFAULT_ROOT_PASSWD}" </tmp/rootpass.sql
