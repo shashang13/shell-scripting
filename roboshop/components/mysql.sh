@@ -18,7 +18,7 @@ if [ $? -ne 0 ]; then
   descriptionPrint "Change Default Root Password"
   echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('Roboshop@1');" > /tmp/rootpass.sql
   DEFAULT_ROOT_PASSWD=$(grep 'temporary password' /var/log/mysqld.log|awk '{print $NF}')
-  mysql --connect-expired-password -uroot -p"${DEFAULT_ROOT_PASSWD}" </tmp/rootpass.sql
+  mysql --connect-expired-password -uroot -p"${DEFAULT_ROOT_PASSWD}" </tmp/rootpass.sql &>>${logFile}
   statusCheck $?
 fi
 
@@ -26,7 +26,7 @@ echo 'show plugins'|mysql -uroot -p'Roboshop@1' >>${logFile} && grep validate_pa
 if [ $? -eq 0 ]; then
   descriptionPrint "Uninstall Validate plugin"
   echo 'uninstall plugin validate_password;' > /tmp/plugin.sql
-  mysql -uroot -p'Roboshop@1' </tmp/plugin.sql
+  mysql -uroot -p'Roboshop@1' </tmp/plugin.sql &>>${logFIle}
   statusCheck $?
 fi
 ### **Setup Needed for Application.**
