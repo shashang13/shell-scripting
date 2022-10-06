@@ -10,7 +10,7 @@ yum install mysql-community-server -y &>>${logFile}
 statusCheck $?
 
 descriptionPrint "Start MySQL"
-systemctl enable mysqld &>> ${logFile} && systemctl start mysqld &>>${logFile}
+systemctl enable mysqld &>>${logFile} && systemctl start mysqld &>>${logFile}
 statusCheck $?
 
 #1. Now a default root password will be generated and given in the log file.
