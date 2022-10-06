@@ -21,23 +21,14 @@ if [ $? -ne 0 ]; then
   mysql --connect-expired-password -uroot -p"${DEFAULT_ROOT_PASSWD}" </tmp/rootpass.sql
   statusCheck $?
 fi
-## mysql_secure_installation
-#```
-#
-#1. You can check the new password working or not using the following command in MySQL
-#
-#First lets connect to MySQL
-#
-#```bash
-## mysql -uroot -pRoboShop@1
-#```
-#
-#Once after login to MySQL prompt then run this SQL Command.
-#
-#```sql
-#> uninstall plugin validate_password;
-#```
-#
+
+echo 'show plugins'|mysql -uroot -p'Roboshop@1' >>${logFile} && grep validate_password ${logFile}
+if [ $? -eq 0 ]; then
+  descriptionPrint "Uninstall Validate plugin"
+  echo 'uninstall plugin validate_password;' > /tmp/plugin.sql
+  mysql -uroot -p'Roboshop@1' </tmp/plugin.sql
+  statusCheck $?
+fi
 ### **Setup Needed for Application.**
 #
 #As per the architecture diagram, MySQL is needed by
