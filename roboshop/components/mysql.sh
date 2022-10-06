@@ -13,15 +13,12 @@ descriptionPrint "Start MySQL"
 systemctl enable mysqld &>>${logFile} && systemctl start mysqld &>>${logFile}
 statusCheck $?
 
-#1. Now a default root password will be generated and given in the log file.
-#
-#```bash
-## grep temp /var/log/mysqld.log
-#```
-#
-#1. Next, We need to change the default root password in order to start using the database service. Use password `RoboShop@1` or any other as per your choice. Rest of the options you can choose `No`
-#
-#```bash
+echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('Roboshop@1');" > /tmp/mysql.sql
+DEFAULT_ROOT_PASSWD=$(grep 'temporary password' /var/log/mysqld.log)
+
+descriptionPrint "Setting Root Password"
+mysql -uroot -p${DEFAULT_ROOT_PASSWD} < /tmp/mysql.sql
+statusCheck $?
 ## mysql_secure_installation
 #```
 #
