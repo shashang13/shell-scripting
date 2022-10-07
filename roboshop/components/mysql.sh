@@ -30,18 +30,15 @@ if [ $? -eq 0 ]; then
   mysql -uroot -pRoboShop@1 </tmp/plugin.sql
   statusCheck $?
 fi
-### **Setup Needed for Application.**
-#
-#As per the architecture diagram, MySQL is needed by
-#
-#- Shipping Service
-#
-#So we need to load that schema into the database, So those applications will detect them and run accordingly.
-#
-#To download schema, Use the following command
-#
-#```bash
-## curl -s -L -o /tmp/mysql.zip "https://github.com/roboshop-devops-project/mysql/archive/main.zip"
-#```
-#
-#Load the schema for Services.
+
+descriptionPrint "Download Shipping Schemas"
+curl -f -s -L -o /tmp/mysql.zip "https://github.com/roboshop-devops-project/mysql/archive/main.zip" &>>${logFile}
+statusCheck $?
+
+descriptionPrint "Download Shipping Schemas"
+cd /tmp && unzip mysql.zip &>>${logFile}
+statusCheck $?
+
+descriptionPrint "Load Shipping Schemas"
+cd mysql-main && mysql -u root -pRoboShop@1 <shipping.sql &>>${logFile}
+statusCheck $?
