@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 source components/common.sh
 
 descriptionPrint "MySQL Repo Setup"
