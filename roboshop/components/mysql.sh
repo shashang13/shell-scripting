@@ -35,7 +35,7 @@ curl -f -s -L -o /tmp/mysql.zip "https://github.com/roboshop-devops-project/mysq
 statusCheck $?
 
 descriptionPrint "Unzip Shipping Schemas"
-cd /tmp && unzip mysql.zip &>>${logFile}
+cd /tmp && unzip -o mysql.zip &>>${logFile}
 statusCheck $?
 
 descriptionPrint "Load Shipping Schemas"
