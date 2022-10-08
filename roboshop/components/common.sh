@@ -47,7 +47,7 @@ serviceSetup () {
          -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' \
          -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' \
          -e 's/CARTENDPOINT/cart.roboshop.internal/' \
-         -e 's/DBHOST/mysql.roboshop.internal/'
+         -e 's/DBHOST/mysql.roboshop.internal/' \
          /home/roboshop/${COMPONENT}/systemd.service &>>${logFile} && mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service &>>${logFile}
   statusCheck $?
 
