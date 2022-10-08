@@ -2,11 +2,11 @@
 source components/common.sh
 
 descriptionPrint "Download RabbitMQ dependencies"
-curl -f -L -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>>${logFile}
+curl -f -L -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>>${logFile} && curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash &>>${logFile}
 statusCheck $?
 
 descriptionPrint "Install Erlang and RabbitMQ"
-yum --skip-broken install https://github.com/rabbitmq/erlang-rpm/releases/download/v25.1/erlang-25.1-1.el8.x86_64.rpm rabbitmq-server -y &>>${logFile}
+yum install erlang rabbitmq-server -y &>>${logFile}
 statusCheck $?
 
 #descriptionPrint "Install RabbitMQ"
