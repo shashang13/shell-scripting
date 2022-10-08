@@ -101,28 +101,3 @@ python () {
 
   serviceSetup
 }
-
-
-#rabbitmq () {
-#
-#
-#}
-#
-#```
-#
-#1. Start RabbitMQ
-#
-#```bash
-## systemctl enable rabbitmq-server
-## systemctl start rabbitmq-server
-#```
-#
-#RabbitMQ comes with a default username / password as `guest`/`guest`. But this user cannot be used to connect. Hence we need to create one user for the application.
-#
-#1. Create application user
-#
-#```bash
-## rabbitmqctl add_user roboshop roboshop123
-## rabbitmqctl set_user_tags roboshop administrator
-## rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
-#```

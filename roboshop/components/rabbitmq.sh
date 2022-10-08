@@ -9,9 +9,12 @@ descriptionPrint "Install Erlang and RabbitMQ"
 yum install erlang rabbitmq-server -y &>>${logFile}
 statusCheck $?
 
-#descriptionPrint "Install RabbitMQ"
-#yum install rabbitmq-server -y
-#statusCheck $?
+descriptionPrint "Start Rabbitmq"
+systemctl enable rabbitmq-server &>>${logFile} && systemctl restart rabbitmq-server &>>${logFile}
+statusCheck $?
 
+descriptionPrint "Create App User"
+rabbitmqctl add_user roboshop roboshop123 &>>${logFile} && rabbitmqctl set_user_tags roboshop administrator &>>${logFile} && rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>${logFile}
+statusCheck $?
 
 
