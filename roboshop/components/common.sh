@@ -8,7 +8,7 @@ fi
 }
 
 descriptionPrint () {
-  echo -e "\n--------------------\e[36m${1}\e[0m----------------------" |tee -a ${logFile}
+  echo -e "\n-------------------- \e[36m${1}\e[0m ----------------------" |tee -a ${logFile}
 }
 
 logFile=/tmp/roboshop.log
