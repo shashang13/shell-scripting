@@ -18,7 +18,7 @@ if [ -z "$(rabbitmqctl list_users|grep roboshop)" ]; then
   descriptionPrint "Create App User"
   rabbitmqctl add_user roboshop roboshop123 &>>${logFile} && rabbitmqctl set_user_tags roboshop administrator &>>${logFile} && rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>${logFile}
   statusCheck $?
-elif [ ! -z "$(rabbitmqctl list_users|grep roboshop)" ]; then
+elif [ -n "$(rabbitmqctl list_users|grep roboshop)" ]; then
   echo app user already available.
 fi
 
