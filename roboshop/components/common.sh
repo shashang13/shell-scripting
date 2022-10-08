@@ -88,7 +88,7 @@ maven () {
   serviceSetup
 }
 
-python () {
+payment () {
   descriptionPrint "Install Python"
   yum install python36 gcc python3-devel -y &>>${logFile}
   statusCheck $?
@@ -96,7 +96,21 @@ python () {
   appSetup
 
   descriptionPrint "Python Package Managing"
-  pip3 install -r requirements.txt
+  pip3 install -r requirements.txt &>>${logFile}
+  statusCheck $?
+
+  serviceSetup
+}
+
+dispatch () {
+  descriptionPrint "Install GoLang"
+  yum install golang -y &>>${logFile}
+  statusCheck $?
+
+  appSetup
+
+  descriptionPrint "Dispatch Package Management"
+  cd ~roboshop/dispatch &>>${logFile} && go mod init dispatch &>>${logFile} && go get &>>${logFile} && go build &>>${logFile}
   statusCheck $?
 
   serviceSetup

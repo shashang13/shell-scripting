@@ -1,7 +1,5 @@
 #!/bin/bash
-
 source components/common.sh
 
-COMPONENT=payment
-payment
-
+COMPONENT=dispatch
+dispatch
