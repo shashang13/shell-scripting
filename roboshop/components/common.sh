@@ -97,7 +97,7 @@ payment () {
   appSetup
 
   descriptionPrint "Python Package Managing"
-  pip3 install -r requirements.txt &>>${logFile}
+  cd /home/${App_User}/${COMPONENT}/ &>>${logFile} && pip3 install -r requirements.txt &>>${logFile}
   statusCheck $?
 
   serviceSetup
