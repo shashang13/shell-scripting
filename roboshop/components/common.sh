@@ -97,6 +97,7 @@ payment () {
   appSetup
 
   descriptionPrint "Python Package Managing"
+  cd /home/roboshop/payment
   pip3 install -r requirements.txt &>>${logFile}
   statusCheck $?
 
