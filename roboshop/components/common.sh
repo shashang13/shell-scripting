@@ -48,6 +48,9 @@ serviceSetup () {
          -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' \
          -e 's/CARTENDPOINT/cart.roboshop.internal/' \
          -e 's/DBHOST/mysql.roboshop.internal/' \
+         -e 's/CARTHOST/cart.roboshop.internal/' \
+         -e 's/USERHOST/user.roboshop.internal/' \
+         -e 's/AMQPHOST/rabbitmq.roboshop.internal/' \
          /home/roboshop/${COMPONENT}/systemd.service &>>${logFile} && mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service &>>${logFile}
   statusCheck $?
 
@@ -84,3 +87,42 @@ maven () {
 
   serviceSetup
 }
+
+python () {
+  descriptionPrint "Install Python"
+  yum install python36 gcc python3-devel -y &>>${logFile}
+  statusCheck $?
+
+  appSetup
+
+  descriptionPrint "Python Package Managing"
+  pip3 install -r requirements.txt
+  statusCheck $?
+
+  serviceSetup
+}
+
+
+#rabbitmq () {
+#
+#
+#}
+#
+#```
+#
+#1. Start RabbitMQ
+#
+#```bash
+## systemctl enable rabbitmq-server
+## systemctl start rabbitmq-server
+#```
+#
+#RabbitMQ comes with a default username / password as `guest`/`guest`. But this user cannot be used to connect. Hence we need to create one user for the application.
+#
+#1. Create application user
+#
+#```bash
+## rabbitmqctl add_user roboshop roboshop123
+## rabbitmqctl set_user_tags roboshop administrator
+## rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+#```
