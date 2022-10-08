@@ -8,53 +8,79 @@ fi
 }
 
 descriptionPrint () {
-  STAGE="${1}"
   echo -e "\n--------------------\e[36m${1}\e[0m----------------------" |tee -a ${logFile}
 }
 
-App_User=roboshop
-
 logFile=/tmp/roboshop.log
 rm -f $logFile
+
+App_User=roboshop
+appSetup () {
+  id ${App_User} &>>${logFile}
+  if [ $? -ne 0 ]; then
+    descriptionPrint "Adding Application User"
+    useradd ${App_User} &>>${logFile}
+    statusCheck $?
+  fi
+
+  descriptionPrint "Download ${COMPONENT} component"
+  curl -f -s -L -o /tmp/${COMPONENT}.zip "https://github.com/roboshop-devops-project/${COMPONENT}/archive/main.zip" &>>${logFile}
+  statusCheck $?
+
+  descriptionPrint "Cleanup Old Content"
+  rm -rf /home/roboshop/${COMPONENT} &>>${logFile}
+  statusCheck $?
+
+  descriptionPrint "Extract ${COMPONENT} Application"
+  cd /home/roboshop &>>${logFile} && unzip -o /tmp/${COMPONENT}.zip &>>${logFile} && mv ${COMPONENT}-main ${COMPONENT} &>>${logFile}
+  statusCheck $?
+}
+
+serviceSetup () {
+  descriptionPrint "Fix App User Permissions"
+  chown -R ${App_User}:${App_User} /home/roboshop/ &>>${logFile}
+  statusCheck $?
+
+  descriptionPrint "Setup SystemD file"
+  sed -i -e 's/MONGO_DNSNAME/mongodb.roboshop.internal/' \
+         -e 's/MONGO_ENDPOINT/mongodb.roboshop.internal/' \
+         -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' \
+         -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' \
+         -e 's/CARTENDPOINT/cart.roboshop.internal/' \
+         -e 's/DBHOST/mysql.roboshop.internal/'
+         /home/roboshop/${COMPONENT}/systemd.service &>>${logFile} && mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service &>>${logFile}
+  statusCheck $?
+
+  descriptionPrint "Starting ${COMPONENT} Service"
+  systemctl daemon-reload &>>${logFile} && systemctl restart ${COMPONENT} &>>${logFile} && systemctl enable ${COMPONENT} &>>${logFile}
+  statusCheck $?
+}
 
 nodeJS () {
   descriptionPrint "Performing Prereqs for ${COMPONENT} components"
   echo "Download & Install nodejs" &>>${logFile}
   curl -fsL https://rpm.nodesource.com/setup_lts.x | bash - &>>${logFile} && echo "" &>>${logFile} && yum install nodejs -y &>>${logFile}
-  statusCheck $? "${STAGE}"
+  statusCheck $?
 
-  id ${App_User} &>>${logFile}
-  if [ $? -ne 0 ]; then
-    descriptionPrint "Adding Application User"
-    useradd ${App_User} &>>${logFile}
-    statusCheck $? "${STAGE}"
-  fi
-
-  descriptionPrint "Download ${COMPONENT} component"
-  curl -f -s -L -o /tmp/${COMPONENT}.zip "https://github.com/roboshop-devops-project/${COMPONENT}/archive/main.zip" &>>${logFile}
-  statusCheck $? "${STAGE}"
-
-  descriptionPrint "Cleanup Old Content"
-  rm -rf /home/roboshop/${COMPONENT} &>>${logFile}
-  statusCheck $? "${STAGE}"
-
-  descriptionPrint "Extract and Install ${COMPONENT} Application"
-  cd /home/roboshop &>>${logFile} && unzip -o /tmp/${COMPONENT}.zip &>>${logFile} && mv ${COMPONENT}-main ${COMPONENT} &>>${logFile}
-  statusCheck $? "${STAGE}"
+  appSetup
 
   descriptionPrint "Install Application dependencies"
   cd /home/roboshop/${COMPONENT} &>>${logFile} && npm install &>>${logFile}
-  statusCheck $? "${STAGE}"
+  statusCheck $?
 
-  descriptionPrint "Fix App User Permissions"
-  chown -R ${App_User}:${App_User} /home/roboshop/ &>>${logFile}
-  statusCheck $? "${STAGE}"
+  serviceSetup
+}
 
-  descriptionPrint "Setup SystemD file"
-  sed -i -e 's/MONGO_DNSNAME/mongodb.roboshop.internal/' -e 's/MONGO_ENDPOINT/mongodb.roboshop.internal/' -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' /home/roboshop/${COMPONENT}/systemd.service &>>${logFile} && mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service &>>${logFile}
-  statusCheck $? "${STAGE}"
+maven () {
+  descriptionPrint "Install Maven"
+  yum install maven -y &>>${logFile}
+  statusCheck $?
 
-  descriptionPrint "Starting ${COMPONENT} Service"
-  systemctl daemon-reload &>>${logFile} && systemctl restart ${COMPONENT} &>>${logFile} && systemctl enable ${COMPONENT} &>>${logFile}
-  statusCheck $? "${STAGE}"
+  appSetup
+
+  descriptionPrint "Maven Package Managing"
+  cd /home/${App_User}/${COMPONENT} &>>${logFile} && mvn clean package &>>${logFile} && mv target/shipping-1.0.jar shipping.jar &>>${logFile}
+  statusCheck $?
+
+  serviceSetup
 }
