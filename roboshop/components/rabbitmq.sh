@@ -14,7 +14,7 @@ systemctl enable rabbitmq-server &>>${logFile} && systemctl restart rabbitmq-ser
 statusCheck $?
 
 descriptionPrint "Create App User"
-if [ -z "$(rabbitmqctl list_users|grep -q roboshop)" ]; then
+if [ -z "$(rabbitmqctl list_users|grep roboshop)" ]; then
   rabbitmqctl add_user roboshop roboshop123 &>>${logFile} && rabbitmqctl set_user_tags roboshop administrator &>>${logFile} && rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>${logFile}
   statusCheck $?
 fi
