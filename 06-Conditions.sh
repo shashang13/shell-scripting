@@ -3,7 +3,7 @@
 x=abc
 case $x in
   abc)
-    echo Value of x=abc
+    echo Values of x=abc
   ;;
   xyz)
     echo Value of x=xyz
