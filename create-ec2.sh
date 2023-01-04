@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 if [ -z "$1" ]; then
   echo -e "\e[31mInput machine name is needed\e[0m"
 fi
