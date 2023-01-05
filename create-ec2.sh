@@ -6,7 +6,7 @@ if [ -z "$1" ]; then
   echo -e "\e[31mInput machine name is needed\e[0m"
 fi
 
-COMPONENT=$1
+export COMPONENT=$1
 
 HOSTED_ZONE_ID="Z03359161XEIHWG682X1"
 
