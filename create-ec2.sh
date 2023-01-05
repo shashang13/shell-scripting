@@ -16,8 +16,6 @@ createEc2(){
   --security-group-ids ${SG_ID} \
   --instance-type t3.micro \
   --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${COMPONENT}}]" \
-#  --user-data "file://ec2userdata.txt ${COMPONENT}" \
-  # shellcheck disable=SC2215
   --instance-market-options "MarketType=spot,SpotOptions={SpotInstanceType=persistent,InstanceInterruptionBehavior=stop}" \
   |jq '.Instances[].PrivateIpAddress' | sed -e 's/"//g')
 
