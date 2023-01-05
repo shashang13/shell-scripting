@@ -17,7 +17,7 @@ createEc2(){
   --instance-type t3.micro \
   --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${COMPONENT}}]" \
   --instance-market-options "MarketType=spot,SpotOptions={SpotInstanceType=persistent,InstanceInterruptionBehavior=stop}" \
-  --user-data "file://ec2userdata.txt ${COMPONENT}" \
+  --user-data "file://ec2userdata.txt" \
   |jq '.Instances[].PrivateIpAddress' | sed -e 's/"//g')
 
   sed -e "s/COMPONENT/${COMPONENT}/" -e "s/IPADDRESS/${PRIVATE_IP}/" route53.json > /tmp/route53.json
