@@ -52,7 +52,7 @@ serviceSetup () {
          -e 's/USERHOST/user.roboshop.internal/' \
          -e 's/AMQPHOST/rabbitmq.roboshop.internal/' \
          -e 's/RABBITMQ-IP/rabbitmq.roboshop.internal/' \
-         /home/roboshop/${COMPONENT}/systemd.service &>>${logFile} && mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service &>>${logFile}
+         /home/roboshop/${COMPONENT}/systemd.yml &>>${logFile} && mv /home/roboshop/${COMPONENT}/systemd.yml /etc/systemd/system/${COMPONENT}.service &>>${logFile}
   statusCheck $?
 
   descriptionPrint "Starting ${COMPONENT} Service"
